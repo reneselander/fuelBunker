@@ -1,6 +1,3 @@
-// Implementation
-
-
 #include "tank.hpp"
 #include <iostream>
 #include <iomanip>
@@ -79,22 +76,37 @@ void runTankCalculation() {
 
     std::cout << std::fixed << std::setprecision(2)
               << "\nBränslenivå: " << level << " m\n"
-              << "Volym:       " << fuel_m3 << " m³ (" << fuel_L << " L)\n"
-              << "Fyllnadsgrad: " << std::setprecision(1) << pct << " %\n\n";
+              << "Volym:       " << fuel_m3 << " m³ (" << fuel_L << " L)\n";
+
+    std::cout << "Fyllnadsgrad: " << std::fixed << std::setprecision(1) << pct << "%\n\n";
 
     const int BAR_W = 30;
     int filled = int(std::round(pct / 100.0 * BAR_W));
+
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    // Färgkodning
+    if (pct < 20.0)
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY); // Röd
+    else if (pct < 50.0)
+        SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY); // Gul
+    else
+        SetConsoleTextAttribute(hConsole, FOREGROUND_GREEN | FOREGROUND_INTENSITY); // Grön
+
     std::cout << "Tankstatus: [";
     for (int i = 0; i < BAR_W; ++i)
         std::cout << (i < filled ? '#' : ' ');
-    std::cout << "] " << pct << " %\n\n";
+    std::cout << "] " << std::fixed << std::setprecision(1) << pct << "%\n\n";
+
+    // Återställ färg
+    SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
     if (pct < 20.0) std::cout << "⚠️ Varning: låg bränslenivå!\n";
     if (pct < 10.0) {
         double target_m3 = total_m3 * 0.99;
         double need_L = (target_m3 - fuel_m3) * 1000.0;
         int order100 = int(std::round(need_L / 100.0) * 100);
-        std::cout << "📦 Beställ minst " << order100 << " L för att nå 99 % fyllnad.\n";
+        std::cout << "📦 Beställ minst " << order100 << " L för att nå 99% fyllnad.\n";
     } else if (pct < 20.0) {
         std::cout << "📦 Planera bränslebeställning snart.\n";
     } else {
