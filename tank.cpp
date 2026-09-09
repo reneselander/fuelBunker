@@ -52,13 +52,13 @@ void pause() {
 
 void runTankCalculation() {
     const double wall = 0.004;
-    double outerW = readDouble("Ange tankens yttre bredd (m): ");
-    double outerD = readDouble("Ange tankens yttre djup  (m): ");
+    double outerL = readDouble("Ange tankens yttre längd  (m): ");
+    double outerW = readDouble("Ange tankens yttre bredd (m): ");    
     double outerH = readDouble("Ange tankens yttre höjd   (m): ");
     double distTop = readDoubleCm("Avstånd från toppen till vätskeytan (cm, ex 12.34): ");
 
     double innerW = outerW - 2 * wall;
-    double innerD = outerD - 2 * wall;
+    double innerD = outerL - 2 * wall;
     double innerH = outerH - wall;
     double level  = innerH - distTop;
 
