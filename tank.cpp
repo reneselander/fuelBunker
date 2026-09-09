@@ -58,20 +58,20 @@ void runTankCalculation() {
     double distTop = readDoubleCm("Avstånd från toppen till vätskeytan (cm, ex 12.34): ");
 
     double innerW = outerW - 2 * wall;
-    double innerD = outerL - 2 * wall;
+    double innerL = outerL - 2 * wall;
     double innerH = outerH - wall;
     double level  = innerH - distTop;
 
-    double fuel_m3  = innerW * innerD * level;
-    double total_m3 = innerW * innerD * innerH;
+    double fuel_m3  = innerW * innerL * level;
+    double total_m3 = innerW * innerL * innerH;
     double fuel_L   = fuel_m3 * 1000.0;
 
     double pct = std::round((fuel_m3 / total_m3) * 1000.0) / 10.0;
 
     std::cout << std::fixed << std::setprecision(3)
               << "\nTankens inre dimensioner:\n"
+              << "  Längd:  " << innerL << " m\n"
               << "  Bredd: " << innerW << " m\n"
-              << "  Djup:  " << innerD << " m\n"
               << "  Höjd:  " << innerH << " m\n";
 
     std::cout << std::fixed << std::setprecision(2)
